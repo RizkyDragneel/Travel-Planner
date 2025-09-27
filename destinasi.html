@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Destinasi Wisata - Travel Planner</title>
+    <style>
+        /* THEME VARIABLE */
+        :root {
+            --bg: #ffffff;
+            --text: #222;
+            --card: #ffffff;
+            --accent: #ff6b6b;
+            --nav: rgba(255, 255, 255, 0.9);
+        }
+
+        body.dark {
+            --bg: linear-gradient(135deg, #232526 0%, #414345 100%);
+            --text: #f5f5f5;
+            --card: #1e1e1e;
+            --accent: #ff8585;
+            --nav: rgba(30, 30, 30, 0.95);
+        }
+
+        html,
+        body {
+            margin: 0;
+            max-width: 100%;
+            overflow-x: hidden;
+            font-family: 'Poppins', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            transition: 0.3s;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        /* NAVBAR */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            background: var(--nav);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+        }
+
+        nav .logo {
+            font-weight: bold;
+            font-size: 1.3rem;
+            color: var(--accent);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text);
+            font-weight: 500;
+            transition: 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+
+        .toggle-btn {
+            cursor: pointer;
+            padding: 6px 12px;
+            border-radius: 8px;
+            border: 1px solid var(--text);
+            background: none;
+            color: var(--text);
+            margin-left: 1rem;
+        }
+
+        /* Hamburger */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 5px;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: var(--text);
+            border-radius: 2px;
+            transition: 0.3s;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                height: 100vh;
+                width: 100%;
+                background: var(--bg);
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                transition: 0.3s;
+            }
+
+            .nav-links.active {
+                right: 0;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+        }
+
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translateY(8px);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translateY(-8px);
+        }
+
+        /* SECTION */
+        .section {
+            padding: 4rem 2rem;
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        .section h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        /* FILTER BAR */
+        .filter-bar {
+            background: rgba(255, 255, 255, 0.6);
+            padding: 1rem;
+            border-radius: 16px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            backdrop-filter: blur(8px);
+        }
+
+        .filter-bar input {
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .filter-bar select,
+        .filter-bar button {
+            padding: 10px 14px;
+            border: none;
+            border-radius: 8px;
+            background: var(--accent);
+            color: #fff;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .filter-bar select:hover,
+        .filter-bar button:hover {
+            opacity: 0.85;
+        }
+
+        /* DESTINASI CARDS */
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .card {
+            background: var(--card);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+        }
+
+        .card img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+        }
+
+        .card-content {
+            padding: 1rem;
+        }
+
+        .card h3 {
+            margin: 0.5rem 0;
+        }
+
+        .price {
+            color: var(--accent);
+            font-weight: bold;
+        }
+
+        /* FOOTER */
+        footer {
+            background: var(--card);
+            padding: 2rem;
+            text-align: center;
+            margin-top: 3rem;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- NAVBAR -->
+    <nav>
+        <div class="logo">TravelPlanner</div>
+        <div class="nav-links" id="navLinks">
+            <a href="index.html">Home</a>
+            <a href="destinasi.html">Destinasi</a>
+            <a href="itinerary.html">Itinerary</a>
+            <a href="about.html">Tentang</a>
+            <a href="contact.html">Kontak</a>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;">
+            <button class="toggle-btn" onclick="document.body.classList.toggle('dark')">🌙/☀️</button>
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- DESTINASI -->
+    <section class="section">
+        <h2>Daftar Destinasi Wisata</h2>
+        <div class="filter-bar">
+            <input type="text" id="search" placeholder="Cari destinasi...">
+            <select id="sort">
+                <option value="default">Urutkan</option>
+                <option value="az">A-Z</option>
+                <option value="za">Z-A</option>
+                <option value="murah">Harga Termurah</option>
+                <option value="mahal">Harga Termahal</option>
+            </select>
+            <button onclick="filterDestinasi('all')">Semua</button>
+            <button onclick="filterDestinasi('pantai')">Pantai</button>
+            <button onclick="filterDestinasi('gunung')">Gunung</button>
+            <button onclick="filterDestinasi('budaya')">Budaya</button>
+            <button onclick="filterDestinasi('kuliner')">Kuliner</button>
+        </div>
+        <div class="cards" id="destinasi-container"></div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <p>&copy; 2025 Travel Planner</p>
+    </footer>
+
+    <script>
+        const destinasi = [
+            { nama: "Pantai Kuta", kategori: "pantai", foto: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e", deskripsi: "Pantai terkenal di Bali dengan pasir putih dan sunset yang indah.", harga: 1500000 },
+            { nama: "Gunung Bromo", kategori: "gunung", foto: "https://images.unsplash.com/photo-1501785888041-af3ef285b470", deskripsi: "Gunung ikonik di Jawa Timur dengan sunrise spektakuler.", harga: 1200000 },
+            { nama: "Candi Borobudur", kategori: "budaya", foto: "https://images.unsplash.com/photo-1553514029-1318c9127859", deskripsi: "Situs warisan dunia UNESCO dan candi Buddha terbesar di dunia.", harga: 800000 },
+            { nama: "Wisata Kuliner Bandung", kategori: "kuliner", foto: "https://images.unsplash.com/photo-1504674900247-0877df9cc836", deskripsi: "Nikmati kuliner khas Sunda dan kafe unik di Bandung.", harga: 500000 },
+            { nama: "Raja Ampat", kategori: "pantai", foto: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e", deskripsi: "Surga bawah laut di Papua Barat dengan pemandangan memukau.", harga: 5000000 }
+        ];
+
+        let currentList = [...destinasi];
+
+        const container = document.getElementById("destinasi-container");
+        const searchInput = document.getElementById("search");
+        const sortSelect = document.getElementById("sort");
+
+        function renderDestinasi(list) {
+            container.innerHTML = "";
+            list.forEach(d => {
+                container.innerHTML += `
+          <div class="card">
+            <img src="${d.foto}" alt="${d.nama}">
+            <div class="card-content">
+              <h3>${d.nama}</h3>
+              <p>${d.deskripsi}</p>
+              <p class="price">Rp ${d.harga.toLocaleString()}</p>
+            </div>
+          </div>`;
+            });
+        }
+
+        function filterDestinasi(kategori) {
+            let q = searchInput.value.toLowerCase();
+            let hasil = destinasi.filter(d =>
+                (kategori === "all" || d.kategori === kategori) &&
+                d.nama.toLowerCase().includes(q)
+            );
+            currentList = hasil;
+            sortDestinasi();
+        }
+
+        function sortDestinasi() {
+            let pilihan = sortSelect.value;
+            let sorted = [...currentList];
+            if (pilihan === "az") sorted.sort((a, b) => a.nama.localeCompare(b.nama));
+            else if (pilihan === "za") sorted.sort((a, b) => b.nama.localeCompare(a.nama));
+            else if (pilihan === "murah") sorted.sort((a, b) => a.harga - b.harga);
+            else if (pilihan === "mahal") sorted.sort((a, b) => b.harga - a.harga);
+            renderDestinasi(sorted);
+        }
+
+        searchInput.addEventListener("input", () => filterDestinasi("all"));
+        sortSelect.addEventListener("change", sortDestinasi);
+
+        renderDestinasi(destinasi);
+
+        // Hamburger toggle
+        const hamburger = document.getElementById("hamburger");
+        const navLinks = document.getElementById("navLinks");
+        hamburger.addEventListener("click", () => {
+            hamburger.classList.toggle("active");
+            navLinks.classList.toggle("active");
+        });
+    </script>
+</body>
+
+</html>
